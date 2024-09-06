@@ -67,5 +67,18 @@ app.post('/schedules', (req, res) => {
 
 })
 
+// 데이터 삭제하기
+app.delete('/schedules/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const schedule = map.get(id);
+
+    if (schedule) {
+        map.delete(id);
+        res.json({ message : `${schedule.title}이 삭제되었습니다.` })
+    }  else {
+        res.json({ message : "해당 데이터가 존재하지 않습니다." })
+    }
+})
+
 // 포트 번호 변경 3002 -> 3004
 app.listen(3004);
