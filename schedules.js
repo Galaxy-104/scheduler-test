@@ -27,7 +27,19 @@ const map = new Map([
     }],
 ]);
 
-// 개별 데이터 조회
+// 전체 데이터 조회
+app.get('/schedules', (req, res) => {
+    const db = [...map];
+
+    if (db.length > 0) {
+        res.json(db);
+    } else {
+        res.json({ message : "데이터가 존재하지 않습니다." })
+    }
+
+})
+
+// 개별 데이터 조회 
 app.get('/schedules/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const schedule = map.get(id);
