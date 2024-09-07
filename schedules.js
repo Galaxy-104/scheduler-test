@@ -32,9 +32,9 @@ app.get('/schedules', (req, res) => {
     const db = [...map];
 
     if (db.length > 0) {
-        res.json(db);
+        res.status(200).json(db);
     } else {
-        res.json({ message : "데이터가 존재하지 않습니다." })
+        res.status(404).json({ message : "데이터가 존재하지 않습니다." })
     }
 
 })
@@ -45,9 +45,9 @@ app.get('/schedules/:id', (req, res) => {
     const schedule = map.get(id);
 
     if (schedule == undefined) {
-        res.json({ message : "존재하지 않는 데이터입니다." })
+        res.status(404).json({ message : "존재하지 않는 데이터입니다." })
     } else {
-        res.json(schedule);
+        res.status(200).json(schedule);
     }
 })
 
@@ -60,9 +60,9 @@ app.post('/schedules', (req, res) => {
 
     if (data.title) {
         map.set(id, data);
-        res.json({ message : "일정이 등록되었습니다." })
+        res.status(201).json({ message : "일정이 등록되었습니다." })
     } else {
-        res.json({ message : "제목을 입력해주세요." }) 
+        res.status(400).json({ message : "제목을 입력해주세요." }) 
     }
 
 })
@@ -74,9 +74,9 @@ app.delete('/schedules/:id', (req, res) => {
 
     if (schedule) {
         map.delete(id);
-        res.json({ message : `${schedule.title}이 삭제되었습니다.` })
+        res.status(200).json({ message : `${schedule.title}이 삭제되었습니다.` })
     }  else {
-        res.json({ message : "해당 데이터가 존재하지 않습니다." })
+        res.status(404).json({ message : "해당 데이터가 존재하지 않습니다." })
     }
 })
 
