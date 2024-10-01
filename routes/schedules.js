@@ -45,13 +45,19 @@ router.get('/', (req, res) => {
 // 개별 데이터 조회 
 router.get('/:id', (req, res) => {
     const id = parseInt(req.params.id);
-    const schedule = map.get(id);
 
-    if (schedule == undefined) {
-        res.status(404).json({ message : "존재하지 않는 데이터입니다." })
-    } else {
-        res.status(200).json(schedule);
-    }
+    conn.query(
+        'SELECT * FROM `schedules` WHERE id = ?', id,
+        function (err, results, fields) {
+            
+            if (results.length) {
+                res.status(200).json(results);
+            } else {
+                res.status(404).end();
+            }
+
+        }
+    )
 })
 
 // 데이터 등록하기
