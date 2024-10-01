@@ -62,16 +62,27 @@ router.get('/:id', (req, res) => {
 
 // 데이터 등록하기
 router.post('/', (req, res) => {
-    const db = [...map];
-    const id = db.length? db.reverse()[0][0] + 1 : 1;
 
-    const data = req.body;
+    const { name, date, time, place, categoty, description } = req.body;
+    const values = [ name, date, time, place, categoty, description ];
 
-    if (data.title) {
-        map.set(id, data);
-        res.status(201).json({ message : "일정이 등록되었습니다." })
+    if (name && date) {
+        conn.query(
+            'INSERT INTO `schedules` (name, date, time, place, category, description) VALUES (?, ?, ?, ?, ?, ?)', values,
+            function (err, results, fields) {
+
+                if (err) {
+                    console.log(err);
+                    return res.status(400).end();
+                }
+
+                res.status(201).json({
+                    message : "일정 등록 완료"
+                })  
+            }
+        )
     } else {
-        res.status(400).json({ message : "제목을 입력해주세요." }) 
+        res.status(400).json({ message : "내용을 입력해주세요." }) 
     }
 
 })
