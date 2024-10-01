@@ -3,6 +3,8 @@ const router = express.Router();
 
 router.use(express.json());
 
+const conn = require('../mariadb');
+
 const map = new Map([
     [1, {
         title : "오리엔테이션",
@@ -29,13 +31,14 @@ const map = new Map([
 
 // 전체 데이터 조회
 router.get('/', (req, res) => {
-    const db = [...map];
 
-    if (db.length > 0) {
-        res.status(200).json(db);
-    } else {
-        res.status(404).json({ message : "데이터가 존재하지 않습니다." })
-    }
+    conn.query(
+        'SELECT * FROM `schedules`',
+        function (err, results, fields) {
+            
+            res.status(200).json(results);
+        }
+    )
 
 })
 

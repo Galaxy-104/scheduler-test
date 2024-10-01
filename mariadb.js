@@ -8,10 +8,4 @@ const connection = mysql.createConnection({
   dateStrings : true,
 });
 
-connection.query(
-    'SELECT * FROM `schedules`',
-    function (err, results, fields) {
-        console.log(results);
-        console.log(fields);
-    }
-)
+module.exports = connection;
