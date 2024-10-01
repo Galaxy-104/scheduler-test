@@ -1,7 +1,7 @@
 const express = require('express');
-const app = express();
+const router = express.Router();
 
-app.use(express.json());
+router.use(express.json());
 
 const map = new Map([
     [1, {
@@ -28,7 +28,7 @@ const map = new Map([
 ]);
 
 // 전체 데이터 조회
-app.get('/schedules', (req, res) => {
+router.get('/', (req, res) => {
     const db = [...map];
 
     if (db.length > 0) {
@@ -40,7 +40,7 @@ app.get('/schedules', (req, res) => {
 })
 
 // 개별 데이터 조회 
-app.get('/schedules/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const schedule = map.get(id);
 
@@ -52,7 +52,7 @@ app.get('/schedules/:id', (req, res) => {
 })
 
 // 데이터 등록하기
-app.post('/schedules', (req, res) => {
+router.post('/', (req, res) => {
     const db = [...map];
     const id = db.length? db.reverse()[0][0] + 1 : 1;
 
@@ -68,7 +68,7 @@ app.post('/schedules', (req, res) => {
 })
 
 // 데이터 삭제하기
-app.delete('/schedules/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const schedule = map.get(id);
 
@@ -80,5 +80,4 @@ app.delete('/schedules/:id', (req, res) => {
     }
 })
 
-// 포트 번호 변경 3002 -> 3004
-app.listen(3004);
+module.exports = router;
