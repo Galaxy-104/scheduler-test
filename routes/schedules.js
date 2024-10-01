@@ -118,13 +118,21 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
     const id = parseInt(req.params.id);
 
+    conn.query(
+        'DELETE FROM `schedules` WHERE id = ?', id,
+        function (err, results, fields) {
 
-    if (schedule) {
-        map.delete(id);
-        res.status(200).json({ message : `${schedule.title}이 삭제되었습니다.` })
-    }  else {
-        res.status(404).json({ message : "해당 데이터가 존재하지 않습니다." })
-    }
+            if (err) {
+                console.log(err);
+                return res.status(400).end();
+            }
+
+            res.status(201).json({
+                message : "일정 삭제 완료"
+            })  
+        }
+    )
+
 })
 
 module.exports = router;
