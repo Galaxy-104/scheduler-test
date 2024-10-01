@@ -87,10 +87,37 @@ router.post('/', (req, res) => {
 
 })
 
+// 데이터 수정하기
+router.put('/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const { name, date, time, place, categoty, description } = req.body;
+    const values = [ name, date, time, place, categoty, description, id ];
+
+    if (name && date) {
+        conn.query(
+            'UPDATE `schedules` SET name = ?, date = ?, time = ?, place = ?, category = ?, description = ? WHERE id = ?', values,
+            function (err, results, fields) {
+
+                if (err) {
+                    console.log(err);
+                    return res.status(400).end();
+                }
+
+                res.status(201).json({
+                    message : "일정 수정 완료"
+                })  
+            }
+        )
+    } else {
+        res.status(400).json({ message : "내용을 입력해주세요." }) 
+    }
+    
+})
+
 // 데이터 삭제하기
 router.delete('/:id', (req, res) => {
     const id = parseInt(req.params.id);
-    const schedule = map.get(id);
+
 
     if (schedule) {
         map.delete(id);
